@@ -15,7 +15,10 @@ class Item:
     def get_item_quantity(self) -> int:
         return self.__item_quantity
         
-
+class Cart:
+    def __init__(self, username: str) -> None:
+        self.__username: str = username
+        self.__cart: dict = {}
         
 def search_item(Item_Name: str) -> 'list':
     import sqlite3
@@ -75,7 +78,43 @@ def get_cart(Username: str) -> list:
     connect.close()
     return Rows
     
+def add_item_to_cart(Username: str, Item_Id: int, Item_Quantity: int) -> None:
+    import sqlite3
+    import sqlite3.dbapi2
+    connect = sqlite3.connect('warehouse.db')
+    cur = connect.cursor()
+    try:
+        query = "INSERT INTO Cart (Username, Item_Id, Item_Quantity) VALUES (Username, Item_Id, Item_Quantity)"
+        cur.execute(query, {'Username': Username, 'Item_Id': Item_Id, 'Item_Quantity': Item_Quantity})
+    except sqlite3.dbapi2.IntegrityError:
+        print("Item already exists")
+    cur.commit()
+    cur.close()
 
+def Update_item_in_cart(Username: str, Item_Name: str, Item_Quantity: int) -> None:
+    import sqlite3
+    import sqlite3.dbapi2
+    connect = sqlite3.connect('warehouse.db')
+    cur = connect.cursor()
+    try:
+        query = "UPDATE Cart SET Item_Quantity = ? WHERE Username = ? AND Item_Name = ?"
+        cur.execute(query, {'Username': Username, 'Item_Name': Item_Name, 'Item_Quantity': Item_Quantity})
+    except sqlite3.dbapi2.IntegrityError:
+        print("Item doesn't exist")
+    cur.commit()
+    cur.close()
+def remove_item_from_cart(Username: str, Item_Name: str,Item_Quantity) -> None:
+    import sqlite3
+    import sqlite3.dbapi2
+    connect = sqlite3.connect('warehouse.db')
+    cur = connect.cursor()
+    try:
+        query = "DELETE FROM Cart WHERE Username = ? AND Item_Name = ? AND Item_Quantity = ?"
+        cur.execute(query, {'Username': Username, 'Item_Name': Item_Name, 'Item_Quantity': Item_Quantity})
+    except sqlite3.dbapi2.IntegrityError:
+        print("Item doesn't exist")
+    cur.commit()
+    cur.close()
 
 
 

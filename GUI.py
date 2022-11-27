@@ -1,6 +1,11 @@
 #GUI for DB project
 import os
 import sqlite3
+from Customer import Customer
+from Cart import Cart
+
+
+
 
 def clear_screen():
     os.system('cls')
@@ -25,7 +30,14 @@ def view_item():
 
 def view_cart():
     clear_screen()
-    #SELECT * FROM cust_cart WHERE user = current_user 
+    Customer.get_username()
+    cart_copy, total = Cart.get_cart()
+    for row in cart_copy:
+        item: Item = row
+        print(f"{item}")
+
+
+
     print("select one of the following")
     print("1. delete item")
     print("2. checkout")
@@ -96,6 +108,9 @@ def gui():
         gui()
 
 def main():
+    logged_in: bool = False
+    run: bool = True
+    logged_in = False
     clear_screen()
     print("select one of the following")
     print("1. login")

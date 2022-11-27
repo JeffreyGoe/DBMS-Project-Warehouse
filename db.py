@@ -1,5 +1,10 @@
 #Create the tables
-
+def CreateTables():
+    create_customer_table()
+    create_warehouse_table()
+    create_cart_table()
+    create_order_table()
+    
 # if any of these don't work change all to capital letters.
 def create_customer_table():
     import sqlite3
@@ -9,7 +14,11 @@ def create_customer_table():
     cur.execute("""CREATE TABLE IF NOT EXISTS Customer (
                 username TEXT UNIQUE PRIMARY KEY,
                 password TEXT,
-                birthday TEXT);
+                birthday TEXT,
+                Address TEXT,
+                Phone_Number TEXT,
+                Email TEXT
+                );
                 """)
     #commit and close the connection
     connect.commit()
